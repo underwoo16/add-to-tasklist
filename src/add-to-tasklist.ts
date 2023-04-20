@@ -1,23 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import * as webhooks from '@octokit/webhooks'
-import {addIssueLinkToBody, updateIssueWithBody} from './utils'
-
-interface IssueResponse {
-  node: {
-    id: string
-    body: string
-  }
-}
-interface RepositoryMileStoneIssueResponse {
-  repository: {
-    milestone: {
-      issues: {
-        edges: IssueResponse[]
-      }
-    }
-  }
-}
+import {addIssueLinkToBody} from './utils'
 
 export async function addToTasklist(): Promise<void> {
   const {action, issue, milestone, repository} = github.context.payload
@@ -38,40 +21,27 @@ export async function addToTasklist(): Promise<void> {
 
   const octokit = github.getOctokit(myToken)
 
-  // find tracking issue that matches milestone
-  // issues in this milestone with tracking-issue label
-  const trackingIssueResponse =
-    await octokit.graphql<RepositoryMileStoneIssueResponse>(
-      `query { 
-          repository(owner: ${repository.owner.login}, name: ${repository.name}) {
-          milestone(number: ${milestone.id}) {
-            issues(labels: ["tracking-issue"], first: 10) {
-              edges {
-                node {
-                  id
-                  body
-                  url
-                }
-              }
-            }
-          }
-        }
-      }`
-    )
+  // fetch tracking issues for this milestone
+  const trackingIssues = await octokit.rest.issues.listForRepo({
+    owner: repository.owner.login,
+    repo: repository.name,
+    milestone: milestone.number,
+    labels: 'tracking-issue'
+  })
 
-  if (!trackingIssueResponse) return
+  if (!trackingIssues || trackingIssues.status !== 200) return
 
-  const trackingIssues = trackingIssueResponse.repository.milestone.issues.edges
-  // add this issue to specified task list
-  // or fallback to one of: [solo task list >> unlabeled task list >> new task list] on tracking issue
-  for (const trackingIssueNode of trackingIssues) {
-    const trackingIssue = trackingIssueNode.node
-    // eslint-disable-next-line no-console
-    console.log(trackingIssue)
-    const updatedBody = addIssueLinkToBody(issue, trackingIssue)
+  // add issue link to tracking issue(s)
+  for (const trackingIssue of trackingIssues.data) {
+    const updatedBody = addIssueLinkToBody(issue.html_url, trackingIssue.body)
 
-    updateIssueWithBody(trackingIssue, updatedBody)
+    if (updatedBody && updatedBody !== trackingIssue.body) {
+      await octokit.rest.issues.update({
+        owner: repository.owner.login,
+        repo: repository.name,
+        issue_number: trackingIssue.number,
+        body: updatedBody
+      })
+    }
   }
 }
-
-

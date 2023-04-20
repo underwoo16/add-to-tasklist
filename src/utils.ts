@@ -1,17 +1,17 @@
-/* eslint-disable no-console */
-interface Issue {
-  id: string
-  body?: string | undefined
-  html_url?: string | undefined
-}
+export function addIssueLinkToBody(
+  issueLink?: string | null,
+  trackingIssueBody?: string | null
+): string {
+  if (!issueLink) {
+    return trackingIssueBody || ''
+  }
 
-export function addIssueLinkToBody(issue: Issue, trackingIssue: Issue): string {
   const tasklistOpener = '```[tasklist]\n### Issues\n'
   const taskListCloser = '\n```\n'
 
-  const newIssueLink = buildIssueLink(issue)
+  const newIssueLink = buildIssueLink(issueLink)
 
-  const body = trackingIssue.body || ''
+  const body = trackingIssueBody || ''
 
   if (!body.includes(tasklistOpener)) {
     return `${body}\n${tasklistOpener}${newIssueLink}${taskListCloser}`
@@ -35,13 +35,6 @@ export function addIssueLinkToBody(issue: Issue, trackingIssue: Issue): string {
   return `${beforeTasklist}${tasklistOpener}${tasklist}\n${newIssueLink}${afterTaskList}`
 }
 
-function buildIssueLink(issue: Issue): string {
-  return `- [] ${issue.html_url}`
-}
-
-export function updateIssueWithBody(
-  issue: Issue,
-  updatedBody: string
-): boolean {
-  return updatedBody !== issue.body
+function buildIssueLink(issueLink: string): string {
+  return `- [] ${issueLink}`
 }

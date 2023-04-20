@@ -22,7 +22,7 @@
     "node",
     "setup"
   ],
-  "author": "",
+  "author": "Chandler Underwood",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.10.0",
