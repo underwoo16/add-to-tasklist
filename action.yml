@@ -1,11 +1,10 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: Add to tracking issue tasklist
+description: Automatically add issues to tracking issue when milestoned
+author: underwoo16
 inputs:
-  milliseconds: # change this
+  github-token:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: A GitHub personal access token with write access to the repository
 runs:
   using: 'node16'
   main: 'dist/index.js'
