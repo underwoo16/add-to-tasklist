@@ -36,5 +36,5 @@ export function addIssueLinkToBody(
 }
 
 function buildIssueLink(issueLink: string): string {
-  return `- [] ${issueLink}`
+  return `- [ ] ${issueLink}`
 }

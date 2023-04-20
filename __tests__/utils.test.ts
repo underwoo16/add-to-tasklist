@@ -12,7 +12,7 @@ describe('#addIssueToTrackingIssue', () => {
     const trackingIssueBody = '### Description\nIpsem Lorem\n'
     const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
     expect(result).toBe(
-      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [] https://github.com/test/test/issues/1\n```\n'
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/1\n```\n'
     )
   })
 
@@ -22,28 +22,28 @@ describe('#addIssueToTrackingIssue', () => {
       '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n```\n'
     const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
     expect(result).toBe(
-      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [] https://github.com/test/test/issues/1\n```\n'
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/1\n```\n'
     )
   })
 
   test('should add issue to existing tasklist with other issues', () => {
     const issueUrl = 'https://github.com/test/test/issues/1'
     const trackingIssueBody =
-      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [] https://github.com/test/test/issues/42\n```\n'
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/42\n```\n'
     const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
     console.log(result)
     expect(result).toBe(
-      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [] https://github.com/test/test/issues/42\n- [] https://github.com/test/test/issues/1\n```\n'
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/42\n- [ ] https://github.com/test/test/issues/1\n```\n'
     )
   })
 
   test('should not add issue when it already exists in tasklist', () => {
     const issueUrl = 'https://github.com/test/test/issues/1'
     const trackingIssueBody =
-      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [] https://github.com/test/test/issues/42\n- [] https://github.com/test/test/issues/1\n```\n'
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/42\n- [ ] https://github.com/test/test/issues/1\n```\n'
     const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
     expect(result).toBe(
-      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [] https://github.com/test/test/issues/42\n- [] https://github.com/test/test/issues/1\n```\n'
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/42\n- [ ] https://github.com/test/test/issues/1\n```\n'
     )
   })
 })

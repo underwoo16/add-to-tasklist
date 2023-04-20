@@ -176,7 +176,7 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
 }
 exports.addIssueLinkToBody = addIssueLinkToBody;
 function buildIssueLink(issueLink) {
-    return `- [] ${issueLink}`;
+    return `- [ ] ${issueLink}`;
 }
 
 
