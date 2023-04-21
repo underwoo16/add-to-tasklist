@@ -7,7 +7,7 @@ export function addIssueLinkToBody(
   }
 
   const tasklistOpener = '```[tasklist]\n### Issues\n'
-  const taskListCloser = '\n```\n'
+  const taskListCloser = '```\n'
 
   const newIssueLink = buildIssueLink(issueLink)
 
@@ -32,9 +32,9 @@ export function addIssueLinkToBody(
   const beforeTasklist = body.slice(0, tasklistStartIndex)
   const afterTaskList = body.slice(tasklistEndIndex)
 
-  return `${beforeTasklist}${tasklistOpener}${tasklist}\n${newIssueLink}${afterTaskList}`
+  return `${beforeTasklist}${tasklistOpener}${tasklist}${newIssueLink}${afterTaskList}`
 }
 
 function buildIssueLink(issueLink: string): string {
-  return `- [ ] ${issueLink}`
+  return `- [ ] ${issueLink}\n`
 }

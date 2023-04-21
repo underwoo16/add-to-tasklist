@@ -7,7 +7,7 @@ describe('#addIssueToTrackingIssue', () => {
     expect(result).not.toBeNull()
   })
 
-  test.skip('should add issue and tasklist when no tasklist is present', () => {
+  test('should add issue and tasklist when no tasklist is present', () => {
     const issueUrl = 'https://github.com/test/test/issues/1'
     const trackingIssueBody = '### Description\nIpsem Lorem\n'
     const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
@@ -16,7 +16,7 @@ describe('#addIssueToTrackingIssue', () => {
     )
   })
 
-  test.skip('should add issue to existing empty tasklist', () => {
+  test('should add issue to existing empty tasklist', () => {
     const issueUrl = 'https://github.com/test/test/issues/1'
     const trackingIssueBody =
       '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n```\n'
