@@ -1,9 +1,12 @@
+import * as core from '@actions/core'
+
 export function addIssueLinkToBody(
   issueLink?: string | null,
   trackingIssueBody?: string | null
-): string {
+): string | null | undefined {
   if (!issueLink) {
-    return trackingIssueBody || ''
+    core.debug('No issue link provided, skipping adding to tracking issue')
+    return trackingIssueBody
   }
 
   const tasklistOpener = '```[tasklist]\n### Issues\n'
@@ -14,8 +17,14 @@ export function addIssueLinkToBody(
   const body = trackingIssueBody || ''
 
   if (!body.includes(tasklistOpener)) {
+    core.debug('No tasklist found, adding new tasklist')
+    core.debug('Body:\n${body}\n')
+    core.debug('Tasklist opener:\n${tasklistOpener}\n')
+
     return `${body}\n${tasklistOpener}${newIssueLink}${taskListCloser}`
   }
+
+  core.debug('Tasklist found, adding issue to tasklist')
 
   const tasklistStartIndex = body.indexOf(tasklistOpener)
   const tasklistEndIndex = body.indexOf(taskListCloser, tasklistStartIndex)
@@ -24,8 +33,10 @@ export function addIssueLinkToBody(
     tasklistStartIndex + tasklistOpener.length,
     tasklistEndIndex
   )
+  core.debug('Tasklist:\n${tasklist}\n')
 
   if (tasklist.includes(newIssueLink)) {
+    core.debug('Issue already exists in tasklist, skipping')
     return body
   }
 
