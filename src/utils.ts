@@ -2,7 +2,16 @@ import * as core from '@actions/core'
 
 const TICK_MARKS = '```'
 const BODY_REGEX =
-  /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Tasks\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/
+  /(?<beforeTasklist>[\S\s]*?)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Tasks\s*)?(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/
+
+interface MatchingGroups {
+  beforeTasklist?: string
+  taskList?: string
+  taskListOpener?: string
+  taskListName?: string
+  taskListEnder?: string
+  afterTaskList?: string
+}
 
 export function addIssueLinkToBody(
   issueLink?: string | null,
@@ -38,28 +47,13 @@ export function addIssueLinkToBody(
     return addNewTaskListToBody(issueLink, trackingIssueBody)
   }
 
-  const {
-    beforeTasklist,
-    taskList,
-    taskListOpener,
-    taskListName,
-    taskListEnder,
-    afterTaskList
-  } = match.groups
-
+  const {taskList} = match.groups
   if (taskList === null || taskList === undefined) {
     core.debug('No matching task list found, adding new task list')
     return addNewTaskListToBody(issueLink, trackingIssueBody)
   }
 
-  if (taskList.includes(issueLink)) {
-    core.debug('Issue link already exists in task list, skipping')
-    return trackingIssueBody
-  }
-
-  return `${beforeTasklist}${taskListOpener}${taskListName}${taskList}${buildIssueLink(
-    issueLink
-  )}${taskListEnder}${afterTaskList}`
+  return rebuildBodyFromGroups(issueLink, match.groups)
 }
 
 function buildIssueLink(issueLink: string): string {
@@ -77,6 +71,30 @@ function addNewTaskListToBody(
   trackingIssueBody: string
 ): string {
   return `${trackingIssueBody}\n${buildNewTaskList(issueLink)}`
+}
+
+function rebuildBodyFromGroups(
+  issueLink: string,
+  groups: MatchingGroups
+): string {
+  const {
+    beforeTasklist,
+    taskListOpener,
+    taskListName,
+    taskList,
+    taskListEnder,
+    afterTaskList
+  } = groups
+
+  return [
+    beforeTasklist,
+    taskListOpener,
+    taskListName,
+    taskList,
+    buildIssueLink(issueLink),
+    taskListEnder,
+    afterTaskList
+  ].join('')
 }
 
 export function getTrackingIssueLabel(): string {

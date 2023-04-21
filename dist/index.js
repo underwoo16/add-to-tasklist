@@ -60,12 +60,11 @@ function addToTasklist() {
         // https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
         const myToken = core.getInput('github-token');
         const octokit = github.getOctokit(myToken);
-        const trackingIssueLabel = (0, utils_1.getTrackingIssueLabel)();
         const trackingIssues = yield octokit.rest.issues.listForRepo({
             owner: repository.owner.login,
             repo: repository.name,
             milestone: milestone.number,
-            labels: trackingIssueLabel
+            labels: (0, utils_1.getTrackingIssueLabel)()
         });
         if (!trackingIssues || trackingIssues.status !== 200)
             return;
@@ -179,7 +178,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getTrackingIssueLabel = exports.addIssueLinkToBody = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const TICK_MARKS = '```';
-const BODY_REGEX = /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Tasks\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/;
+const BODY_REGEX = /(?<beforeTasklist>[\S\s]*?)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Tasks\s*)?(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/;
 function addIssueLinkToBody(issueLink, trackingIssueBody) {
     if (!issueLink) {
         core.debug('No issue link provided, skipping adding to tracking issue');
@@ -202,16 +201,12 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
         core.debug('No matching tasklist found, adding new task list and issue link');
         return addNewTaskListToBody(issueLink, trackingIssueBody);
     }
-    const { beforeTasklist, taskList, taskListOpener, taskListName, taskListEnder, afterTaskList } = match.groups;
+    const { taskList } = match.groups;
     if (taskList === null || taskList === undefined) {
         core.debug('No matching task list found, adding new task list');
         return addNewTaskListToBody(issueLink, trackingIssueBody);
     }
-    if (taskList.includes(issueLink)) {
-        core.debug('Issue link already exists in task list, skipping');
-        return trackingIssueBody;
-    }
-    return `${beforeTasklist}${taskListOpener}${taskListName}${taskList}${buildIssueLink(issueLink)}${taskListEnder}${afterTaskList}`;
+    return rebuildBodyFromGroups(issueLink, match.groups);
 }
 exports.addIssueLinkToBody = addIssueLinkToBody;
 function buildIssueLink(issueLink) {
@@ -222,6 +217,18 @@ function buildNewTaskList(issueLink) {
 }
 function addNewTaskListToBody(issueLink, trackingIssueBody) {
     return `${trackingIssueBody}\n${buildNewTaskList(issueLink)}`;
+}
+function rebuildBodyFromGroups(issueLink, groups) {
+    const { beforeTasklist, taskListOpener, taskListName, taskList, taskListEnder, afterTaskList } = groups;
+    return [
+        beforeTasklist,
+        taskListOpener,
+        taskListName,
+        taskList,
+        buildIssueLink(issueLink),
+        taskListEnder,
+        afterTaskList
+    ].join('');
 }
 function getTrackingIssueLabel() {
     const input = core.getInput('tracking-issue-label');

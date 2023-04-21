@@ -116,4 +116,14 @@ describe('#addIssueToTrackingIssue', () => {
       '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [x] a checked item\n- [ ] https://github.com/test/test/issues/1\n```\n'
     )
   })
+
+  test('should add issue to tasklist with no title', () => {
+    const issueUrl = 'https://github.com/test/test/issues/1'
+    const trackingIssueBody =
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n```'
+    const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
+    expect(result).toBe(
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n- [ ] https://github.com/test/test/issues/1\n```'
+    )
+  })
 })

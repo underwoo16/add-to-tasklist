@@ -21,13 +21,11 @@ export async function addToTasklist(): Promise<void> {
 
   const octokit = github.getOctokit(myToken)
 
-  const trackingIssueLabel = getTrackingIssueLabel()
-
   const trackingIssues = await octokit.rest.issues.listForRepo({
     owner: repository.owner.login,
     repo: repository.name,
     milestone: milestone.number,
-    labels: trackingIssueLabel
+    labels: getTrackingIssueLabel()
   })
 
   if (!trackingIssues || trackingIssues.status !== 200) return
