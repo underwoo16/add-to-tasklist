@@ -178,7 +178,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.addIssueLinkToBody = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const tickMarks = '```';
-const bodyRegex = /(?<beforeTasklist>[\S\s]*)(?<taskListWhole>(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*)(?<taskListEnder>```))(?<afterTaskList>[\S\s]*)/g;
+const bodyRegex = /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/g;
 function addIssueLinkToBody(issueLink, trackingIssueBody) {
     if (!issueLink) {
         core.debug('No issue link provided, skipping adding to tracking issue');
