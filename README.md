@@ -2,8 +2,9 @@
 Creating an action to add issues to a tasklist when a milestone is added to the issue.
 
 ### TODO
+- Rename to `add-to-tracking-issue`
 - Make tasklist title configurable via action inputs
-- Decide on strategy for demilestoning
+- Decide on strategy for demilestoning (leave tracking issue alone vs. remove issue)
 
 # Add to tasklist action
 
@@ -14,7 +15,7 @@ A tracking issue is an issue in the milestone that contains a tasklist filled wi
 
 ### tracking-issue-label
 
-**Optional** The label that will be used to identify the tracking issue. Default `"tracking-issue"`.
+**Optional** The label that will be used to identify the tracking issue. Default `tracking-issue`.
 
 ## Example usage
 
