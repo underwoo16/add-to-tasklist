@@ -177,33 +177,32 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.addIssueLinkToBody = void 0;
 const core = __importStar(__nccwpck_require__(2186));
+const tickMarks = '```';
+const bodyRegex = /(?<beforeTasklist>[\S\s]*)(?<taskListWhole>(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*)(?<taskListEnder>```))(?<afterTaskList>[\S\s]*)/g;
 function addIssueLinkToBody(issueLink, trackingIssueBody) {
     if (!issueLink) {
         core.debug('No issue link provided, skipping adding to tracking issue');
         return trackingIssueBody;
     }
-    const tasklistOpener = '```[tasklist]\n### Issues';
-    const taskListCloser = '```';
-    const newIssueLink = buildIssueLink(issueLink);
-    const body = trackingIssueBody || '';
-    if (!body.includes(tasklistOpener)) {
-        core.debug('No tasklist found, adding new tasklist');
-        core.debug(`Body:\n${body}\n`);
-        core.debug(`Tasklist opener:\n${tasklistOpener}\n`);
-        return `${body}\n${tasklistOpener}\n${newIssueLink}${taskListCloser}`;
+    if (!trackingIssueBody) {
+        core.debug('No tracking issue body provided, skipping adding to tracking issue');
+        return trackingIssueBody;
     }
-    core.debug('Tasklist found, adding issue to tasklist');
-    const tasklistStartIndex = body.indexOf(tasklistOpener);
-    const tasklistEndIndex = body.indexOf(taskListCloser, tasklistStartIndex + tasklistOpener.length);
-    const tasklist = body.slice(tasklistStartIndex + tasklistOpener.length, tasklistEndIndex);
-    core.debug(`Tasklist:\n${tasklist}\n`);
-    if (tasklist.includes(newIssueLink)) {
-        core.debug('Issue already exists in tasklist, skipping');
-        return body;
+    const match = bodyRegex.exec(trackingIssueBody);
+    if (!match || !match.groups) {
+        core.debug('No matching tasklist found, adding new task list and issue link');
+        return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${tickMarks}`;
     }
-    const beforeTasklist = body.slice(0, tasklistStartIndex);
-    const afterTaskList = body.slice(tasklistEndIndex);
-    return `${beforeTasklist}${tasklistOpener}${tasklist}${newIssueLink}${afterTaskList}`;
+    const { beforeTasklist, taskList, taskListOpener, taskListName, taskListEnder, afterTaskList } = match.groups;
+    if (!taskList) {
+        core.debug('No matching task list found, adding new task list');
+        return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${tickMarks}`;
+    }
+    if (taskList.includes(issueLink)) {
+        core.debug('Issue link already exists in task list, skipping');
+        return trackingIssueBody;
+    }
+    return `${beforeTasklist}${taskListOpener}${taskListName}${taskList}${buildIssueLink(issueLink)}${taskListEnder}${afterTaskList}`;
 }
 exports.addIssueLinkToBody = addIssueLinkToBody;
 function buildIssueLink(issueLink) {

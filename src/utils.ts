@@ -23,9 +23,11 @@ export function addIssueLinkToBody(
   const match = bodyRegex.exec(trackingIssueBody)
   if (!match || !match.groups) {
     core.debug(
-      'Could not parse tracking issue body, skipping adding to tracking issue'
+      'No matching tasklist found, adding new task list and issue link'
     )
-    return trackingIssueBody
+    return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(
+      issueLink
+    )}${tickMarks}`
   }
 
   const {
@@ -38,7 +40,7 @@ export function addIssueLinkToBody(
   } = match.groups
 
   if (!taskList) {
-    core.debug('No task list found, adding new task list')
+    core.debug('No matching task list found, adding new task list')
     return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(
       issueLink
     )}${tickMarks}`
