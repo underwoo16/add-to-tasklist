@@ -1,6 +1,6 @@
 {
   "name": "add-to-tasklist",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "GitHub Action to add issues to tasklist when milestoned",
   "main": "lib/main.js",
