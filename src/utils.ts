@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 
 const tickMarks = '```'
 const bodyRegex =
-  /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/g
+  /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/g
 
 export function addIssueLinkToBody(
   issueLink?: string | null,
