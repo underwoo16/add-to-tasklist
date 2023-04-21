@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import {addIssueLinkToBody} from './utils'
+import {addIssueLinkToBody, getTrackingIssueLabel} from './utils'
 
 export async function addToTasklist(): Promise<void> {
   const {action, issue, milestone, repository} = github.context.payload
@@ -21,12 +21,13 @@ export async function addToTasklist(): Promise<void> {
 
   const octokit = github.getOctokit(myToken)
 
-  // fetch tracking issues for this milestone
+  const trackingIssueLabel = getTrackingIssueLabel()
+
   const trackingIssues = await octokit.rest.issues.listForRepo({
     owner: repository.owner.login,
     repo: repository.name,
     milestone: milestone.number,
-    labels: 'tracking-issue'
+    labels: trackingIssueLabel
   })
 
   if (!trackingIssues || trackingIssues.status !== 200) return

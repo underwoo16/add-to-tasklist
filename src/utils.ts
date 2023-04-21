@@ -75,3 +75,11 @@ function addNewTaskListToBody(
 ): string {
   return `${trackingIssueBody}\n${buildNewTaskList(issueLink)}`
 }
+
+export function getTrackingIssueLabel(): string {
+  const input = core.getInput('tracking-issue-label')
+
+  if (!input) return 'tracking-issue'
+
+  return input
+}

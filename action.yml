@@ -5,6 +5,10 @@ inputs:
   github-token:
     required: true
     description: A GitHub personal access token with write access to the repository
+  tracking-issue-label:
+    description: Label used to identify tracking issues in the milestone
+    required: false
+    default: 'tracking-issue'
 runs:
   using: 'node16'
   main: 'dist/index.js'

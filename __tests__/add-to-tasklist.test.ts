@@ -162,6 +162,78 @@ describe('addToTasklist', () => {
 
     expect(outputs).toEqual({updatedId: '123'})
   })
+
+  test('should use default label to find tracking issues when input is unset', async () => {
+    github.context.payload = {
+      repository: {name: 'repo', owner: {login: 'owner'}},
+      issue: {number: 1, html_url: 'www.github.com/test/test/issues/1'},
+      milestone: {number: 1},
+      action: 'milestoned'
+    }
+
+    const mockApi = mockRestIssuesApi(
+      {
+        func: 'listForRepo',
+        return: {
+          status: 200,
+          data: [{number: 1, body: '### Description\nAnd some body text'}]
+        }
+      },
+      {
+        func: 'update',
+        return: {
+          data: {node_id: '123'}
+        }
+      }
+    )
+
+    await addToTasklist()
+
+    expect(mockApi.listForRepo).toHaveBeenCalledWith({
+      owner: 'owner',
+      repo: 'repo',
+      labels: 'tracking-issue',
+      milestone: 1
+    })
+    expect(outputs).toEqual({updatedId: '123'})
+  })
+
+  test('should use label input to find tracking issues', async () => {
+    mockGetInput({'tracking-issue-label': 'custom-label'})
+
+    github.context.payload = {
+      repository: {name: 'repo', owner: {login: 'owner'}},
+      issue: {number: 1, html_url: 'www.github.com/test/test/issues/1'},
+      milestone: {number: 1},
+      action: 'milestoned'
+    }
+
+    const mockApi = mockRestIssuesApi(
+      {
+        func: 'listForRepo',
+        return: {
+          status: 200,
+          data: [{number: 1, body: '### Description\nAnd some body text'}]
+        }
+      },
+      {
+        func: 'update',
+        return: {
+          data: {node_id: '123'}
+        }
+      }
+    )
+
+    await addToTasklist()
+
+    expect(mockApi.listForRepo).toHaveBeenCalledWith({
+      owner: 'owner',
+      repo: 'repo',
+      labels: 'custom-label',
+      milestone: 1
+    })
+    expect(outputs).toEqual({updatedId: '123'})
+  })
 })
 
 function mockGetInput(mocks: Record<string, string>): jest.SpyInstance {
@@ -190,4 +262,6 @@ function mockRestIssuesApi(...mocks: {func: string; return: unknown}[]) {
       }
     } as unknown as ReturnType<typeof github.getOctokit>
   })
+
+  return mock
 }
