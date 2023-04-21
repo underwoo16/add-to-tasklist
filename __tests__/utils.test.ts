@@ -86,4 +86,14 @@ describe('#addIssueToTrackingIssue', () => {
       '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ] https://github.com/test/test/issues/42\n```\n```[tasklist]\n### API Changes\n- [ ] https://github.com/test/test/issues/1\n```'
     )
   })
+
+  test('should add issue to tasklist with non-link items', () => {
+    const issueUrl = 'https://github.com/test/test/issues/1'
+    const trackingIssueBody =
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ] This is a plain-text task\n```\n'
+    const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
+    expect(result).toBe(
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ] This is a plain-text task\n- [ ] https://github.com/test/test/issues/1\n```\n'
+    )
+  })
 })
