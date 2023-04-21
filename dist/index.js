@@ -186,8 +186,8 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
         return trackingIssueBody;
     }
     if (!trackingIssueBody) {
-        core.debug('No tracking issue body provided, skipping adding to tracking issue');
-        return trackingIssueBody;
+        core.debug('No tracking issue body provided, creating new tasklist');
+        return buildNewTaskList(issueLink);
     }
     if (!BODY_REGEX.test(trackingIssueBody)) {
         core.debug('No matching tasklist found, adding new task list and issue link');

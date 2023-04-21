@@ -1,9 +1,31 @@
 import {addIssueLinkToBody} from '../src/utils'
 
 describe('#addIssueToTrackingIssue', () => {
-  test('should not return null', () => {
-    const result = addIssueLinkToBody('test', 'test')
-    expect(result).not.toBeNull()
+  test('should add issue and tasklist when body is empty string', () => {
+    const issueUrl = 'https://github.com/test/test/issues/1'
+    const trackingIssueBody = ''
+    const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
+    expect(result).toBe(
+      '```[tasklist]\n### Tasks\n- [ ] https://github.com/test/test/issues/1\n```'
+    )
+  })
+
+  test('should add issue and tasklist when body is null', () => {
+    const issueUrl = 'https://github.com/test/test/issues/1'
+    const trackingIssueBody = null
+    const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
+    expect(result).toBe(
+      '```[tasklist]\n### Tasks\n- [ ] https://github.com/test/test/issues/1\n```'
+    )
+  })
+
+  test('should add issue and tasklist when body is undefined', () => {
+    const issueUrl = 'https://github.com/test/test/issues/1'
+    const trackingIssueBody = undefined
+    const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
+    expect(result).toBe(
+      '```[tasklist]\n### Tasks\n- [ ] https://github.com/test/test/issues/1\n```'
+    )
   })
 
   test('should add issue and tasklist when no tasklist is present', () => {
