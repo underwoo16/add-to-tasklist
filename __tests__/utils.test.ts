@@ -76,4 +76,14 @@ describe('#addIssueToTrackingIssue', () => {
       '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ] https://github.com/test/test/issues/42\n- [ ] https://github.com/test/test/issues/1\n```\n```[tasklist]\n### API Changes\n- [ ] https://github.com/test/test/issues/43\n```'
     )
   })
+
+  test('should not add issue when link is present in another tasklist', () => {
+    const issueUrl = 'https://github.com/test/test/issues/1'
+    const trackingIssueBody =
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ] https://github.com/test/test/issues/42\n```\n```[tasklist]\n### API Changes\n- [ ] https://github.com/test/test/issues/1\n```'
+    const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
+    expect(result).toBe(
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ] https://github.com/test/test/issues/42\n```\n```[tasklist]\n### API Changes\n- [ ] https://github.com/test/test/issues/1\n```'
+    )
+  })
 })

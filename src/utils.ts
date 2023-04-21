@@ -18,6 +18,11 @@ export function addIssueLinkToBody(
     return buildNewTaskList(issueLink)
   }
 
+  if (trackingIssueBody.includes(issueLink)) {
+    core.debug('Issue link already exists in tracking issue body, skipping')
+    return trackingIssueBody
+  }
+
   if (!BODY_REGEX.test(trackingIssueBody)) {
     core.debug(
       'No matching tasklist found, adding new task list and issue link'
