@@ -158,7 +158,7 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
         return trackingIssueBody || '';
     }
     const tasklistOpener = '```[tasklist]\n### Issues\n';
-    const taskListCloser = '\n```\n';
+    const taskListCloser = '```\n';
     const newIssueLink = buildIssueLink(issueLink);
     const body = trackingIssueBody || '';
     if (!body.includes(tasklistOpener)) {
@@ -172,11 +172,11 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
     }
     const beforeTasklist = body.slice(0, tasklistStartIndex);
     const afterTaskList = body.slice(tasklistEndIndex);
-    return `${beforeTasklist}${tasklistOpener}${tasklist}\n${newIssueLink}${afterTaskList}`;
+    return `${beforeTasklist}${tasklistOpener}${tasklist}${newIssueLink}${afterTaskList}`;
 }
 exports.addIssueLinkToBody = addIssueLinkToBody;
 function buildIssueLink(issueLink) {
-    return `- [ ] ${issueLink}`;
+    return `- [ ] ${issueLink}\n`;
 }
 
 

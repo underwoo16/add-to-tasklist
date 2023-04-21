@@ -2,7 +2,7 @@ import {addIssueLinkToBody} from '../src/utils'
 import {expect, test, describe} from '@jest/globals'
 
 describe('#addIssueToTrackingIssue', () => {
-  test.skip('should not return null', () => {
+  test('should not return null', () => {
     const result = addIssueLinkToBody('test', 'test')
     expect(result).not.toBeNull()
   })
