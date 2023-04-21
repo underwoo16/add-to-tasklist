@@ -3,7 +3,6 @@ Creating an action to add issues to a tasklist when a milestone is added to the 
 
 ### TODO
 - Make tasklist title configurable via action inputs
-- Handle scenario where tasklist has checked items
 - Handle scenario where tasklist has no title
 - Decide on strategy for demilestoning
 
