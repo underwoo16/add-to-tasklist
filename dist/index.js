@@ -177,8 +177,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.addIssueLinkToBody = void 0;
 const core = __importStar(__nccwpck_require__(2186));
-const tickMarks = '```';
-const bodyRegex = /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/g;
+const TICK_MARKS = '```';
+const BODY_REGEX = /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/;
 function addIssueLinkToBody(issueLink, trackingIssueBody) {
     if (!issueLink) {
         core.debug('No issue link provided, skipping adding to tracking issue');
@@ -188,15 +188,19 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
         core.debug('No tracking issue body provided, skipping adding to tracking issue');
         return trackingIssueBody;
     }
-    const match = bodyRegex.exec(trackingIssueBody);
+    if (!BODY_REGEX.test(trackingIssueBody)) {
+        core.debug('No matching tasklist found, adding new task list and issue link');
+        return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
+    }
+    const match = BODY_REGEX.exec(trackingIssueBody);
     if (!match || !match.groups) {
         core.debug('No matching tasklist found, adding new task list and issue link');
-        return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${tickMarks}`;
+        return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
     }
     const { beforeTasklist, taskList, taskListOpener, taskListName, taskListEnder, afterTaskList } = match.groups;
     if (taskList === null || taskList === undefined) {
         core.debug('No matching task list found, adding new task list');
-        return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${tickMarks}`;
+        return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
     }
     if (taskList.includes(issueLink)) {
         core.debug('Issue link already exists in task list, skipping');
