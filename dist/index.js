@@ -79,7 +79,6 @@ function addToTasklist() {
                     issue_number: trackingIssue.number,
                     body: updatedBody
                 });
-                core.setOutput('updated', true);
                 core.setOutput('updatedId', updateResponse.data.node_id);
             }
         }
@@ -180,7 +179,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.addIssueLinkToBody = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const TICK_MARKS = '```';
-const BODY_REGEX = /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/;
+const BODY_REGEX = /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Tasks\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/;
 function addIssueLinkToBody(issueLink, trackingIssueBody) {
     if (!issueLink) {
         core.debug('No issue link provided, skipping adding to tracking issue');
@@ -215,7 +214,7 @@ function buildIssueLink(issueLink) {
     return `- [ ] ${issueLink}\n`;
 }
 function buildNewTaskList(issueLink) {
-    return `${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
+    return `${TICK_MARKS}[tasklist]\n### Tasks\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
 }
 function addNewTaskListToBody(issueLink, trackingIssueBody) {
     return `${trackingIssueBody}\n${buildNewTaskList(issueLink)}`;

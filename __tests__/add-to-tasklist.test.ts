@@ -123,7 +123,7 @@ describe('addToTasklist', () => {
         data: [
           {
             number: 1,
-            body: '```[tasklist]\n### Issues\n- [ ] www.github.com/test/test/issues/1\n```'
+            body: '```[tasklist]\n### Tasks\n- [ ] www.github.com/test/test/issues/1\n```'
           }
         ]
       }
@@ -160,7 +160,7 @@ describe('addToTasklist', () => {
 
     await addToTasklist()
 
-    expect(outputs).toEqual({updated: true, updatedId: '123'})
+    expect(outputs).toEqual({updatedId: '123'})
   })
 })
 

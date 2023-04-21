@@ -43,7 +43,6 @@ export async function addToTasklist(): Promise<void> {
         body: updatedBody
       })
 
-      core.setOutput('updated', true)
       core.setOutput('updatedId', updateResponse.data.node_id)
     }
   }

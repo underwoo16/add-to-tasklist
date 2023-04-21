@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 
 const TICK_MARKS = '```'
 const BODY_REGEX =
-  /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/
+  /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Tasks\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/
 
 export function addIssueLinkToBody(
   issueLink?: string | null,
@@ -64,7 +64,7 @@ function buildIssueLink(issueLink: string): string {
 }
 
 function buildNewTaskList(issueLink: string): string {
-  return `${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(
+  return `${TICK_MARKS}[tasklist]\n### Tasks\n${buildIssueLink(
     issueLink
   )}${TICK_MARKS}`
 }
