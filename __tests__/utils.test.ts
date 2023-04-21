@@ -1,5 +1,4 @@
 import {addIssueLinkToBody} from '../src/utils'
-import {expect, test, describe} from '@jest/globals'
 
 describe('#addIssueToTrackingIssue', () => {
   test('should not return null', () => {

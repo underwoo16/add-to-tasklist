@@ -36,12 +36,15 @@ export async function addToTasklist(): Promise<void> {
     const updatedBody = addIssueLinkToBody(issue.html_url, trackingIssue.body)
 
     if (updatedBody && updatedBody !== trackingIssue.body) {
-      await octokit.rest.issues.update({
+      const updateResponse = await octokit.rest.issues.update({
         owner: repository.owner.login,
         repo: repository.name,
         issue_number: trackingIssue.number,
         body: updatedBody
       })
+
+      core.setOutput('updated', 'true')
+      core.setOutput('updatedId', updateResponse.data.node_id)
     }
   }
 }
