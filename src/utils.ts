@@ -3,6 +3,7 @@ import * as core from '@actions/core'
 const TICK_MARKS = '```'
 const BODY_REGEX =
   /(?<beforeTasklist>[\S\s]*)(?<taskListOpener>```\[tasklist\]\s*)(?<taskListName>### Issues\s*)(?<taskList>[\S\s]*?)(?<taskListEnder>```)(?<afterTaskList>[\S\s]*)/
+
 export function addIssueLinkToBody(
   issueLink?: string | null,
   trackingIssueBody?: string | null
@@ -23,9 +24,7 @@ export function addIssueLinkToBody(
     core.debug(
       'No matching tasklist found, adding new task list and issue link'
     )
-    return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(
-      issueLink
-    )}${TICK_MARKS}`
+    return addNewTaskListToBody(issueLink, trackingIssueBody)
   }
 
   const match = BODY_REGEX.exec(trackingIssueBody)
@@ -33,9 +32,7 @@ export function addIssueLinkToBody(
     core.debug(
       'No matching tasklist found, adding new task list and issue link'
     )
-    return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(
-      issueLink
-    )}${TICK_MARKS}`
+    return addNewTaskListToBody(issueLink, trackingIssueBody)
   }
 
   const {
@@ -49,9 +46,7 @@ export function addIssueLinkToBody(
 
   if (taskList === null || taskList === undefined) {
     core.debug('No matching task list found, adding new task list')
-    return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(
-      issueLink
-    )}${TICK_MARKS}`
+    return addNewTaskListToBody(issueLink, trackingIssueBody)
   }
 
   if (taskList.includes(issueLink)) {
@@ -66,4 +61,17 @@ export function addIssueLinkToBody(
 
 function buildIssueLink(issueLink: string): string {
   return `- [ ] ${issueLink}\n`
+}
+
+function buildNewTaskList(issueLink: string): string {
+  return `${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(
+    issueLink
+  )}${TICK_MARKS}`
+}
+
+function addNewTaskListToBody(
+  issueLink: string,
+  trackingIssueBody: string
+): string {
+  return `${trackingIssueBody}\n${buildNewTaskList(issueLink)}`
 }

@@ -190,17 +190,17 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
     }
     if (!BODY_REGEX.test(trackingIssueBody)) {
         core.debug('No matching tasklist found, adding new task list and issue link');
-        return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
+        return addNewTaskListToBody(issueLink, trackingIssueBody);
     }
     const match = BODY_REGEX.exec(trackingIssueBody);
     if (!match || !match.groups) {
         core.debug('No matching tasklist found, adding new task list and issue link');
-        return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
+        return addNewTaskListToBody(issueLink, trackingIssueBody);
     }
     const { beforeTasklist, taskList, taskListOpener, taskListName, taskListEnder, afterTaskList } = match.groups;
     if (taskList === null || taskList === undefined) {
         core.debug('No matching task list found, adding new task list');
-        return `${trackingIssueBody}\n${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
+        return addNewTaskListToBody(issueLink, trackingIssueBody);
     }
     if (taskList.includes(issueLink)) {
         core.debug('Issue link already exists in task list, skipping');
@@ -211,6 +211,12 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
 exports.addIssueLinkToBody = addIssueLinkToBody;
 function buildIssueLink(issueLink) {
     return `- [ ] ${issueLink}\n`;
+}
+function buildNewTaskList(issueLink) {
+    return `${TICK_MARKS}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${TICK_MARKS}`;
+}
+function addNewTaskListToBody(issueLink, trackingIssueBody) {
+    return `${trackingIssueBody}\n${buildNewTaskList(issueLink)}`;
 }
 
 
