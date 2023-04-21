@@ -12,7 +12,7 @@ describe('#addIssueToTrackingIssue', () => {
     const trackingIssueBody = '### Description\nIpsem Lorem\n'
     const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
     expect(result).toBe(
-      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/1\n```\n'
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Issues\n- [ ] https://github.com/test/test/issues/1\n```'
     )
   })
 
