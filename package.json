@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "add-to-tasklist",
   "version": "0.0.1",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "GitHub Action to add issues to tasklist when milestoned",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/underwoo16/add-to-tasklist.git"
   },
   "keywords": [
     "actions",
