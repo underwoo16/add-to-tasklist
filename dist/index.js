@@ -194,7 +194,7 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
         return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${tickMarks}`;
     }
     const { beforeTasklist, taskList, taskListOpener, taskListName, taskListEnder, afterTaskList } = match.groups;
-    if (!taskList) {
+    if (taskList === null || taskList === undefined) {
         core.debug('No matching task list found, adding new task list');
         return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(issueLink)}${tickMarks}`;
     }

@@ -39,7 +39,7 @@ export function addIssueLinkToBody(
     afterTaskList
   } = match.groups
 
-  if (!taskList) {
+  if (taskList === null || taskList === undefined) {
     core.debug('No matching task list found, adding new task list')
     return `${trackingIssueBody}\n${tickMarks}[tasklist]\n### Issues\n${buildIssueLink(
       issueLink
