@@ -182,7 +182,7 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
         core.debug('No issue link provided, skipping adding to tracking issue');
         return trackingIssueBody;
     }
-    const tasklistOpener = '```[tasklist]\n### Issues\n';
+    const tasklistOpener = '```[tasklist]\n### Issues';
     const taskListCloser = '```';
     const newIssueLink = buildIssueLink(issueLink);
     const body = trackingIssueBody || '';
@@ -190,7 +190,7 @@ function addIssueLinkToBody(issueLink, trackingIssueBody) {
         core.debug('No tasklist found, adding new tasklist');
         core.debug(`Body:\n${body}\n`);
         core.debug(`Tasklist opener:\n${tasklistOpener}\n`);
-        return `${body}\n${tasklistOpener}${newIssueLink}${taskListCloser}`;
+        return `${body}\n${tasklistOpener}\n${newIssueLink}${taskListCloser}`;
     }
     core.debug('Tasklist found, adding issue to tasklist');
     const tasklistStartIndex = body.indexOf(tasklistOpener);

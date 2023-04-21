@@ -9,7 +9,7 @@ export function addIssueLinkToBody(
     return trackingIssueBody
   }
 
-  const tasklistOpener = '```[tasklist]\n### Issues\n'
+  const tasklistOpener = '```[tasklist]\n### Issues'
   const taskListCloser = '```'
 
   const newIssueLink = buildIssueLink(issueLink)
@@ -21,7 +21,7 @@ export function addIssueLinkToBody(
     core.debug(`Body:\n${body}\n`)
     core.debug(`Tasklist opener:\n${tasklistOpener}\n`)
 
-    return `${body}\n${tasklistOpener}${newIssueLink}${taskListCloser}`
+    return `${body}\n${tasklistOpener}\n${newIssueLink}${taskListCloser}`
   }
 
   core.debug('Tasklist found, adding issue to tasklist')
