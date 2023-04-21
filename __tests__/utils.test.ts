@@ -96,4 +96,14 @@ describe('#addIssueToTrackingIssue', () => {
       '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ] This is a plain-text task\n- [ ] https://github.com/test/test/issues/1\n```\n'
     )
   })
+
+  test('should add issue to tasklist with empty items', () => {
+    const issueUrl = 'https://github.com/test/test/issues/1'
+    const trackingIssueBody =
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ]\n```\n'
+    const result = addIssueLinkToBody(issueUrl, trackingIssueBody)
+    expect(result).toBe(
+      '### Description\nIpsem Lorem\n\n```[tasklist]\n### Tasks\n- [ ]\n- [ ] https://github.com/test/test/issues/1\n```\n'
+    )
+  })
 })
