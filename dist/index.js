@@ -73,12 +73,14 @@ function addToTasklist() {
         for (const trackingIssue of trackingIssues.data) {
             const updatedBody = (0, utils_1.addIssueLinkToBody)(issue.html_url, trackingIssue.body);
             if (updatedBody && updatedBody !== trackingIssue.body) {
-                yield octokit.rest.issues.update({
+                const updateResponse = yield octokit.rest.issues.update({
                     owner: repository.owner.login,
                     repo: repository.name,
                     issue_number: trackingIssue.number,
                     body: updatedBody
                 });
+                core.setOutput('updated', true);
+                core.setOutput('updatedId', updateResponse.data.node_id);
             }
         }
     });
