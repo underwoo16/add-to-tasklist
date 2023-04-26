@@ -6,7 +6,7 @@ on:
       - milestoned
 
 jobs:
-  add-to-tasklist:
+  add-to-tracking-issue:
     runs-on: ubuntu-latest
     name: A job to test this repository's action
     steps:

@@ -2,7 +2,6 @@
 Creating an action to add issues to a tasklist when a milestone is added to the issue.
 
 ### TODO
-- Rename to `add-to-tracking-issue`
 - Make tasklist title configurable via action inputs
 - Decide on strategy for demilestoning (leave tracking issue alone vs. remove issue)
 
@@ -20,7 +19,7 @@ A tracking issue is an issue in the milestone that contains a tasklist filled wi
 ## Example usage
 
 ```yaml
-  uses: underwoo16/add-to-tasklist
+  uses: underwoo16/add-to-tracking-issue
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     tracking-issue-label: 'tracking-issue'
