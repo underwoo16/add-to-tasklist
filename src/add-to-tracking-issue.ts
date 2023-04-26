@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {addIssueLinkToBody, getTrackingIssueLabel} from './utils'
 
-export async function addToTasklist(): Promise<void> {
+export async function addToTrackingIssue(): Promise<void> {
   const {action, issue, milestone, repository} = github.context.payload
 
   if (!repository) return

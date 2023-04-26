@@ -1,9 +1,9 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
-import {addToTasklist} from '../src/add-to-tasklist'
+import {addToTrackingIssue} from '../src/add-to-tracking-issue'
 
-describe('addToTasklist', () => {
+describe('addToTrackingIssue', () => {
   let outputs: Record<string, string>
   beforeEach(() => {
     jest.spyOn(process.stdout, 'write').mockImplementation(() => true)
@@ -30,7 +30,7 @@ describe('addToTasklist', () => {
       action: 'opened'
     }
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({})
   })
@@ -43,7 +43,7 @@ describe('addToTasklist', () => {
       action: 'opened'
     }
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({})
   })
@@ -56,7 +56,7 @@ describe('addToTasklist', () => {
       action: 'opened'
     }
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({})
   })
@@ -69,7 +69,7 @@ describe('addToTasklist', () => {
       action: 'opened'
     }
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({})
   })
@@ -82,7 +82,7 @@ describe('addToTasklist', () => {
       action: 'opened'
     }
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({})
   })
@@ -103,7 +103,7 @@ describe('addToTasklist', () => {
       }
     })
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({})
   })
@@ -129,7 +129,7 @@ describe('addToTasklist', () => {
       }
     })
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({})
   })
@@ -158,7 +158,7 @@ describe('addToTasklist', () => {
       }
     )
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(outputs).toEqual({updatedId: '123'})
   })
@@ -187,7 +187,7 @@ describe('addToTasklist', () => {
       }
     )
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(mockApi.listForRepo).toHaveBeenCalledWith({
       owner: 'owner',
@@ -224,7 +224,7 @@ describe('addToTasklist', () => {
       }
     )
 
-    await addToTasklist()
+    await addToTrackingIssue()
 
     expect(mockApi.listForRepo).toHaveBeenCalledWith({
       owner: 'owner',

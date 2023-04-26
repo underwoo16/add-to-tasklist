@@ -1,9 +1,9 @@
 import * as core from '@actions/core'
-import {addToTasklist} from './add-to-tasklist'
+import {addToTrackingIssue} from './add-to-tracking-issue'
 
 async function run(): Promise<void> {
   try {
-    await addToTasklist()
+    await addToTrackingIssue()
   } catch (e: unknown) {
     const error = e as Error
     core.setFailed(error.message)

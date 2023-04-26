@@ -1,8 +1,8 @@
 {
-  "name": "add-to-tasklist",
+  "name": "add-to-tracking-issue",
   "version": "0.0.2",
   "private": true,
-  "description": "GitHub Action to add issues to tasklist when milestoned",
+  "description": "GitHub Action to add issues to tracking issue tasklist when milestoned",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",

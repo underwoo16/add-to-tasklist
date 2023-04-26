@@ -1,7 +1,7 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 9630:
+/***/ 2454:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -39,11 +39,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.addToTasklist = void 0;
+exports.addToTrackingIssue = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const utils_1 = __nccwpck_require__(918);
-function addToTasklist() {
+function addToTrackingIssue() {
     return __awaiter(this, void 0, void 0, function* () {
         const { action, issue, milestone, repository } = github.context.payload;
         if (!repository)
@@ -83,7 +83,7 @@ function addToTasklist() {
         }
     });
 }
-exports.addToTasklist = addToTasklist;
+exports.addToTrackingIssue = addToTrackingIssue;
 
 
 /***/ }),
@@ -127,11 +127,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
-const add_to_tasklist_1 = __nccwpck_require__(9630);
+const add_to_tracking_issue_1 = __nccwpck_require__(2454);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, add_to_tasklist_1.addToTasklist)();
+            yield (0, add_to_tracking_issue_1.addToTrackingIssue)();
         }
         catch (e) {
             const error = e;

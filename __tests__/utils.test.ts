@@ -1,6 +1,6 @@
 import {addIssueLinkToBody} from '../src/utils'
 
-describe('#addIssueToTrackingIssue', () => {
+describe('#addIssueLinkToBody', () => {
   test('should add issue and tasklist when body is empty string', () => {
     const issueUrl = 'https://github.com/test/test/issues/1'
     const trackingIssueBody = ''
